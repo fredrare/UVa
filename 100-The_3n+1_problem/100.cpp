@@ -1,7 +1,8 @@
 #include <iostream>
 #include <cstdio>
-#include <unordered_map>
-std::unordered_map<long int,int>map;
+#include <cstdlib>
+#define limit 1000000
+int *map=(int*)calloc(limit,sizeof(int));
 int func(long int n){
   if(n==1)
     return 1;
@@ -10,6 +11,8 @@ int func(long int n){
     n=3*n+1;
   else
     n=n/2;
+  if(n>=limit)
+    return func(n)+1;
   map[n]?1:map[n]=func(n);
   ans=map[n]+1;
   return ans;
