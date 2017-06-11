@@ -31,7 +31,7 @@ int main(){
         if(r<s && list[r-1]->right!=NULL){
           list[l-1]->left->right=list[r-1]->right;
           list[r-1]->right->left=list[l-1]->left;
-        } else if(list[l-1]->left!=NULL)
+        } else
           list[l-1]->left->right=NULL;
       } else if(r<s && list[r-1]->right!=NULL)
         list[r-1]->right->left=NULL;
