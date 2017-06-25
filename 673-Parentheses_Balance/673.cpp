@@ -1,44 +1,26 @@
 #include <iostream>
 #include <cstdio>
-#include <stack>
 int main() {
-  int n,len,i,correct,p1,p2;
+  int n,correct,pos;
   std::string str="";
-  char c;
+  char c,*stack;
   scanf("%i ",&n);
-  while(n--){
-    std::stack<int> st;
-    correct=1;
-    st.push(p1=p2=0);
-    while(scanf("%c",&c),c!='\n'){
-      if(correct){
-        switch(c){
-          case '(':
-            st.push(1);
-            p1++;
-            break;
-          case '[':
-            st.push(2);
-            p2++;
-            break;
-          case ']':
-            if(st.top()==2){
-              st.pop();
-              p2--;
-            }else
-              correct=0;
-            break;
-          case ')':
-            if(st.top()==1){
-              st.pop();
-              p1--;
-            }else
-              correct=0;
-            break;
-        }
+  while(n--) {
+    stack=(char*)calloc(129,pos=correct=1);
+    while(scanf("%c",&c),c!='\n') {
+      if(correct) {
+        if(c==']') {
+          if(stack[--pos]!='[')
+            correct=0;
+        } else if(c==')') {
+          if(stack[--pos]!='(')
+            correct=0;
+        } else
+          stack[pos++]=c;
       }
     }
-    if(correct && p1==0 && p2==0)
+    free(stack);
+    if(correct && pos==1)
       str+="Yes\n";
     else
       str+="No\n";
