@@ -3,9 +3,9 @@
 #define ROWS 6
 #define COLS 5
 char **pass;
-int *lenght;
+int *length;
 void insert (char c, int col) {
-  int i, end = lenght [col];
+  int i, end = length [col];
   for (i = 0; i < end; i++) {
     if (c < pass [col] [i])
       break;
@@ -15,7 +15,7 @@ void insert (char c, int col) {
   while (end > i)
     pass [col] [end + 1] = pass [col] [--end];
   pass [col] [i] = c;
-  lenght [col] ++;
+  length [col] ++;
 }
 int main () {
   char **grid;
@@ -32,7 +32,7 @@ int main () {
   ans [COLS + 1] = '\0';
   scanf ("%i", &t);
   while (t--) {
-    lenght = (int*) calloc (ROWS, sizeof (int));
+    length = (int*) calloc (ROWS, sizeof (int));
     scanf ("%i ", &k);
     for (i = 0; i < ROWS; i++) {
       for (j = 0; j < COLS; j++)
@@ -48,17 +48,17 @@ int main () {
       }
     }
     for (aux = 1, i = 0; i < COLS; i++)
-      aux *= lenght [i];
+      aux *= length [i];
     if (k-- > aux) printf ("NO\n");
     else {
       for (i = COLS - 1; i >= 0; i--){
-        mod = k % lenght [i];
+        mod = k % length [i];
         ans [i] = pass [i] [mod];
-        k /= lenght [i];
+        k /= length [i];
       }
       printf ("%s\n", ans);
     }
-    free (lenght);
+    free (length);
   }
   return 0;
 }
