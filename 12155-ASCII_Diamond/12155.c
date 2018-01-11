@@ -3,37 +3,58 @@
 #include <string.h>
 const char *letters = "abcdefghijklmnopqrstuvwxyz";
 char** diamond;
+int **test;
 void fill(int n,
     int top, int left,
     int bottom, int right){
-  int i, j, size, pos, aux;
+  int i, j, size, pos, aux, *ptri, *ptrj, auxtop, auxleft;
   size = 2 * n - 1;
-  for(i = (top < (size - bottom) ? top : (size - bottom));
-      i < n && i < bottom; i++){
+  ptri = n < bottom ? &n : &bottom;
+  auxleft = size - right;
+  if(left < auxleft)
+    auxleft = left;
+  auxtop = size - bottom;
+  for(i = top < auxtop ? top : auxtop; i < *ptri; i++){
     aux = n - 1 - i;
     if(!diamond[i])
       diamond[i] = (char*) calloc(size, 1);
-    for(j = left; j < aux && j < right; j++)
+    ptrj = aux < right ? &aux : &right;
+    for(j = auxleft;
+        j < *ptrj; j++)
       diamond[i][j] = '.';
-    for(j = (aux > left ? aux : left),
-        pos = n - 1 - (j > left ? 0 : left - aux);
-        j < n && j < right; j++, pos--)
-      diamond[i][j] = letters[pos%26];
+    ptrj = n < right ? &n : &right;
+    if(aux > auxleft){
+      j = aux;
+      pos = n - 1;
+    }else{
+      j = auxleft;
+      pos = n - 1 - auxleft + aux;
+    }
+    while(j < *ptrj)
+      diamond[i][j++] = letters[(pos--) % 26];
     aux = n + i;
-    for(j = (n > left ? n : left),
-        pos = n - i + (j > left ? 0 : left - n);
-        j < aux && j < right; j++, pos++)
-      diamond[i][j] = letters[pos%26];
-    for(j = aux; j < size && j < right; j++)
+    ptrj = aux < right ? &aux : &right;
+    if(n > auxleft){
+      j = n;
+      pos = n - i;
+    }else{
+      j = auxleft;
+      pos = auxleft - i;
+    }
+    while(j < *ptrj)
+      diamond[i][j++] = letters[(pos++) % 26];
+    ptrj = size < right ? &size : &right;
+    for(j = aux; j < *ptrj; j++)
       diamond[i][j] = '.';
   }
   for(i = (n > top ? n : top); i < bottom; i++){
-    diamond[i] = (char*) malloc(size + 1);
+    if(!diamond[i])
+      diamond[i] = (char*) malloc(size + 1);
     memcpy(diamond[i], diamond[size - i - 1], size + 1);
   }
 }
 int main(){
-  int n, row1, col1, row2, col2, size, i, j, aux, pos, count = 1;
+  int n, row1, col1, row2, col2, size, i, j, count = 1;
   int top, bottom, left, right;
   while(scanf("%d%d%d%d%d", &n, &row1, &col1, &row2, &col2), n){
     size = 2 * n - 1;
